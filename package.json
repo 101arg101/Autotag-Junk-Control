@@ -1,7 +1,7 @@
 {
   "name": "Autotag Junk Control",
   "main": "./lib/autotag-junk-control",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Autotag Junk Control autocompletes tags that you create. You can create your own templates for specific tags in a similar fashion to snippets, but you have the ability to map Autotag to your '<' key without interfering with other languages. Not only that, but activating Autotag is much faster than having to go through snippets since you can type like you normally would when creating a ML file.",
   "activationCommands": {
     "atom-workspace": "autotag-junk-control:open-tag"
