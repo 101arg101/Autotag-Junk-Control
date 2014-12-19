@@ -6,7 +6,7 @@
   "activationCommands": {
     "atom-workspace": "autotag-junk-control:open-tag"
   },
-  "repository": "https://github.com/atom/Autotag-Junk-Control",
+  "repository": "https://github.com/101arg101/Autotag-Junk-Control",
   "license": "MIT",
   "engines": {
     "atom": ">0.120.0"
