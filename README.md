@@ -2,8 +2,7 @@
 
 The grammars list in the settings defines which languages Autotag should run on. When running `autotag-junk-control:open-tag` outside of a specified grammar or running it while you have an open tag, it will insert `<`.
 
-Templates are rendered when you type a character
-You don't need to escape `@` in your templates.
+Templates are rendered when you type a character. You don't need to escape `@` in your templates.
 
 * `@[regex]` defines regex that closes the tag when you press a key that matches it. It does not accept flags and only accepts POSIX expressions.
 * `@text` outputs to the text you type in between the opening and closing characters.
