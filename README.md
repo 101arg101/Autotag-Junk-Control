@@ -12,10 +12,9 @@ You don't need to escape `@` in your templates.
 
 If you want to add a template, keep the originals, and don't wanna dig through the source code to find them (they're at the top), then copy & paste `@[>] <@text>@cursor</@text>, @[\s] <@text @cursor></@text>, @[/] <@text @cursor />, @[%?] <@key@text @cursor @key>`
 
-![A screenshot of your spankin' package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+![A screenshot of your spankin' package](https://cloud.githubusercontent.com/assets/1163573/5508364/8dd8da58-8771-11e4-8007-d776aa63b41d.gif)
 
 TODO:
 
   1. Add support for enclosing selections with Autotag
   2. Add more robust regex handling to support patterns more than 1 character in length. e.g. being able to match `img>` and treat it differently than matching `>`.
-  3.

@@ -18,6 +18,7 @@ module.exports =
 
   activate: (state) ->
     atom.workspaceView.command "autotag-junk-control:open-tag", => @openTag()
+    # TODO: fix the hotkeyReg to enable full regex and allow for multiple chars to be matched
     hotkeyReg = /@\[.+?\]/
     @bindCallback()
     for item in atom.config.get('autotag-junk-control.templates')
