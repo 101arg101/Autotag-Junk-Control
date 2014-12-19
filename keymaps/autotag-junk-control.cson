@@ -1,0 +1,2 @@
+'atom-text-editor':
+  'ctrl-,': 'autotag-junk-control:open-tag'

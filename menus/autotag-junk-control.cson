@@ -1,0 +1,22 @@
+# See https://atom.io/docs/latest/creating-a-package#menus for more details
+'context-menu':
+  'atom-text-editor': [
+    {
+      'label': 'Open Tag autotag-junk-control'
+      'command': 'autotag-junk-control:open-tag'
+    }
+  ]
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'autotag-junk-control'
+      'submenu': [
+        {
+          'label': 'Open Tag'
+          'command': 'autotag-junk-control:open-tag'
+        }
+      ]
+    ]
+  }
+]
