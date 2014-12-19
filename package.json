@@ -1,15 +1,15 @@
 {
-  "name": "autotag-junk-control",
+  "name": "Autotag Junk Control",
   "main": "./lib/autotag-junk-control",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Autotag Junk Control makes creating HTML, PHP, ERB, etc. tags super simple. All you need to do is type like you would normally and Autotag will autocomplete the tags you create. Hitting the spacebar after opening a tag will allow you to edit attributes. Typing '>' will close the tag and move your caret in between the tags. Typing '/' will create a self-closing tag for HTML/XML. Typing any other non-alphanumeric character, such as '?' or '%' will create a tag styled like PHP tags or ERB tags.",
   "activationCommands": {
     "atom-workspace": "autotag-junk-control:open-tag"
   },
-  "repository": "https://github.com/atom/autotag-junk-control",
+  "repository": "https://github.com/atom/Autotag-Junk-Control",
   "license": "MIT",
   "engines": {
-    "atom": ">0.50.0"
+    "atom": ">0.120.0"
   },
   "dependencies": {
   }
