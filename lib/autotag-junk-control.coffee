@@ -11,22 +11,34 @@ module.exports =
     templates:
       type: 'array'
       description: 'View the readme for more info about creating a template.'
-      default: ['@[>] <@text>@cursor</@text>','@[\\s] <@text @cursor></@text>','@[/] <@text @cursor />','@[%?] <@key@text @cursor @key>']
+      default: ['@/>/ <@text>@cursor</@text>', '@/\\s/ <@text @cursor></@text>', '@/\\// <@text @cursor />', '@/%?/ <@key@text @cursor @key>']
       items:
         type: 'string'
-        default: '@[>]<@text>@cursor</@text>'
+        default: '@/>/<@text>@cursor</@text>'
 
   activate: (state) ->
     atom.workspaceView.command "autotag-junk-control:open-tag", => @openTag()
-    # TODO: fix the hotkeyReg to enable full regex and allow for multiple chars to be matched
-    hotkeyReg = /@\[.+?\]/
-    @bindCallback()
+    
     for item in atom.config.get 'autotag-junk-control.templates'
-      @templates.push(
-        hotkey: item.match(hotkeyReg)[0][1..]
-        template: item.replace(hotkeyReg, '').trim()
-      )
+      hotkey = @charSubstr(item, '@/', '/')
+      @templates.push
+        hotkey: hotkey
+        template: item.replace('@/' + hotkey + '/', '').trim()
     @grammars = atom.config.get 'autotag-junk-control.grammars'
+    @bindCallback()
+
+  charSubstr: (str, from, to) ->
+    index = str.indexOf(from) + from.length
+    char = str.charAt index
+    concat = ''
+    while char != to
+      concat += char
+      if char == '\\'
+        ++index
+        concat += str.charAt index
+      ++index
+      char = str.charAt index
+    return concat
 
   keystrokeCallback: (e) ->
     # normalize the key being pressed into either a character or the word for the key
@@ -63,7 +75,7 @@ module.exports =
     editor = atom.workspace.getActivePaneItem()
     @end = editor.getCursorBufferPosition()
     textRange = new Range(@start, @end)
-    # TODO: make this not look like crap
+    # TODO: put all of the template generation into a new class that is pre-parsed
     wholeRange = new Range(textRange.start.translate({row:0,column:-1}),textRange.end.translate({row:0,column:1}))
     text = editor.getTextInBufferRange(textRange)
     # compile output
