@@ -21,23 +21,23 @@ module.exports =
     # TODO: fix the hotkeyReg to enable full regex and allow for multiple chars to be matched
     hotkeyReg = /@\[.+?\]/
     @bindCallback()
-    for item in atom.config.get('autotag-junk-control.templates')
+    for item in atom.config.get 'autotag-junk-control.templates'
       @templates.push(
         hotkey: item.match(hotkeyReg)[0][1..]
         template: item.replace(hotkeyReg, '').trim()
       )
-    @grammars = atom.config.get('autotag-junk-control.grammars')
+    @grammars = atom.config.get 'autotag-junk-control.grammars'
 
   keystrokeCallback: (e) ->
     # normalize the key being pressed into either a character or the word for the key
-    if e.keyIdentifier.indexOf('U+') == 0
-      str = e.keyIdentifier.replace('U+','0x')
-      key = String.fromCodePoint(str)
+    if e.keyIdentifier.indexOf 'U+' == 0
+      str = e.keyIdentifier.replace 'U+', '0x'
+      key = String.fromCodePoint str
     else
       key = e.keyIdentifier
     # test each template's hotkey regex for the key being pressed
     template = @templates.filter (item) ->
-      ///#{item.hotkey}///.test(key)
+      ///#{item.hotkey}///.test key
     if template[0]?
       e.preventDefault()
       @stop.call(this, key, template[0])
@@ -47,9 +47,12 @@ module.exports =
     # only allow one instance of Autotag to listen
     return editor.insertText('<') unless @listening and editor.getGrammar().name in @grammars
     @listening = false
-    @start = editor.getCursorBufferPosition().translate({row:0,column:1})
+    @start  = editor.getCursorBufferPosition().translate({row:0,column:1})
+    @starts = editor.getCursorBufferPositions().map (position) ->
+      position.translate({row:0,column:1})
     editor.insertText('<\u2026')
-    editor.setCursorBufferPosition(@start)
+    # editor.setCursorBufferPosition(@start)
+    editor.moveRight()
     # listen for the hotkey being pressed
     window.addEventListener('keypress', @bindedCallback)
 
