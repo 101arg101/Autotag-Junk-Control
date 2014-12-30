@@ -11,20 +11,27 @@ module.exports =
     templates:
       type: 'array'
       description: 'View the readme for more info about creating a template.'
-      default: ['@/>/ <@text>@cursor</@text>', '@/\\s/ <@text @cursor></@text>', '@/\\// <@text @cursor />', '@/%?/ <@key@text @cursor @key>']
+      default: ['@/>/ <@text>@cursor</@text>',
+        '@/\\s/ <@text @cursor></@text>',
+        '@/[%?]/ <@0@text @cursor @0>',
+        '@/(img)\\s/ <@1 src="@cursor"/>',
+        '@/(area|base|br|col|command|embed|img|input|keygen|hr|link|meta|param|source|track|wbr)\\s/ <@1 @cursor />',
+        '@/(area|base|br|col|command|embed|img|input|keygen|hr|link|meta|param|source|track|wbr)>/ <@1 /> @cursor']
       items:
         type: 'string'
         default: '@/>/<@text>@cursor</@text>'
 
   activate: (state) ->
     atom.workspaceView.command "autotag-junk-control:open-tag", => @openTag()
-    
+
     for item in atom.config.get 'autotag-junk-control.templates'
       hotkey = @charSubstr(item, '@/', '/')
       @templates.push
         hotkey: hotkey
         template: item.replace('@/' + hotkey + '/', '').trim()
+    @templates.reverse()
     @grammars = atom.config.get 'autotag-junk-control.grammars'
+    @txt = ''
     @bindCallback()
 
   charSubstr: (str, from, to) ->
@@ -48,20 +55,27 @@ module.exports =
     else
       key = e.keyIdentifier
     # test each template's hotkey regex for the key being pressed
+    txt = @txt
     template = @templates.filter (item) ->
-      ///#{item.hotkey}///.test key
+      console.log(txt + key)
+      ///#{item.hotkey}///i.test(txt + key)
+    console.log(template)
     if template[0]?
       e.preventDefault()
       @stop.call(this, key, template[0])
+    else
+      @txt += key
 
   openTag: ->
     editor = atom.workspace.getActivePaneItem()
     # only allow one instance of Autotag to listen
     return editor.insertText('<') unless @listening and editor.getGrammar().name in @grammars
+    # TODO: change @listening to @step to determine how many keypresses Autotag listened to. After about 16 or so, automatically close.
     @listening = false
-    @start  = editor.getCursorBufferPosition().translate({row:0,column:1})
+    @txt = ''
+    @start  = editor.getCursorBufferPosition().translate({row: 0, column: 1})
     @starts = editor.getCursorBufferPositions().map (position) ->
-      position.translate({row:0,column:1})
+      position.translate({row: 0, column: 1})
     editor.insertText('<\u2026')
     # editor.setCursorBufferPosition(@start)
     editor.moveRight()
@@ -76,7 +90,7 @@ module.exports =
     @end = editor.getCursorBufferPosition()
     textRange = new Range(@start, @end)
     # TODO: put all of the template generation into a new class that is pre-parsed
-    wholeRange = new Range(textRange.start.translate({row:0,column:-1}),textRange.end.translate({row:0,column:1}))
+    wholeRange = new Range(textRange.start.translate({row: 0, column: -1}), textRange.end.translate({row: 0, column: 1}))
     text = editor.getTextInBufferRange(textRange)
     # compile output
     out = template.template.replace /@key/g, key
