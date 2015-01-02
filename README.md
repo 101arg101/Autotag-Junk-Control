@@ -17,3 +17,4 @@ TODO:
 
   1. Add support for enclosing selections with Autotag
   2. Add more robust regex handling to support patterns more than 1 character in length. e.g. being able to match `img>` and treat it differently than matching `>`.
+  3. Add support for multiple cursors/selections
